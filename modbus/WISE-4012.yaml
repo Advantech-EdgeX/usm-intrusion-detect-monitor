@@ -1,0 +1,63 @@
+name: "WISE-4012"
+manufacturer: "Advantech WISE-4012"
+model: "WISE-4012"
+description: "Modbus on WISE-4012"
+labels:
+  - "WISE-4012"
+deviceResources:
+  -
+    name: "Temperature"
+    description: "Temperature on WISE-4012 40001"
+    attributes:
+      { primaryTable: "HOLDING_REGISTERS", startingAddress: "1" }
+    properties:
+      value:
+        { type: "UINT16", scale: "0.001526"}
+      units:
+        { type: "String", readWrite: "R", defaultValue: "C"}
+  -
+    name: "WaterLevel"
+    description: "WaterLevel on WISE-4012 40002"
+    attributes:
+      { primaryTable: "HOLDING_REGISTERS", startingAddress: "2" }
+    properties:
+      value:
+        { type: "UINT16", scale: "0.001526"}
+      units:
+        { type: "String", readWrite: "R", defaultValue: "%"}
+deviceCommands:
+  -
+    name: "Temperature"
+    get:
+      - { index: "1", operation: "get", deviceResource: "Temperature" }
+  -
+    name: "WaterLevel"
+    get:
+      - { index: "1", operation: "get", deviceResource: "WaterLevel" }
+coreCommands:
+  -
+    name: "Temperature"
+    get:
+      path: "/api/v1/device/{deviceId}/Temperature"
+      responses:
+        -
+          code: "200"
+          description: "Get the Values"
+          expectedValues: ["Temperature"]
+        -
+          code: "500"
+          description: "internal server error"
+          expectedValues: []
+  -
+    name: "WaterLevel"
+    get:
+      path: "/api/v1/device/{deviceId}/WaterLevel"
+      responses:
+        -
+          code: "200"
+          description: "Get the Values"
+          expectedValues: ["WaterLevel"]
+        -
+          code: "500"
+          description: "internal server error"
+          expectedValues: []

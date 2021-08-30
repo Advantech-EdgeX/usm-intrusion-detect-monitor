@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE modbuspal_slave SYSTEM "modbuspal.dtd">
+<modbuspal_slave>
+<slave id="1" enabled="true" name="WISE-4012" implementation="modbus">
+<holding_registers>
+<register address="0" value="35386" name="Temperature"/>
+<register address="1" value="1966" name="WaterLevel"/>
+</holding_registers>
+<coils>
+<coil address="16" value="0" name="Light"/>
+<coil address="17" value="0" name="Fan"/>
+<coil address="18" value="0" name="Pump"/>
+</coils>
+<tuning>
+<reply_delay min="0" max="0" />
+<error_rates no_reply="0.0" />
+</tuning>
+</slave>
+</modbuspal_slave>

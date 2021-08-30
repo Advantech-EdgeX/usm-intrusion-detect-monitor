@@ -1,0 +1,50 @@
+name: "FATEKPLC"
+manufacturer: "FATEKPLC"
+model: "FATEKPLC"
+description: "FATEKPLC"
+labels:
+  - "FATEKPLC"
+deviceResources:
+  -
+    name: "Pump"
+    description: "Pump(S0) on FATEKPLC"
+    attributes:
+      { primaryTable: "COILS", startingAddress: "6001" }
+    properties:
+      value:
+        { type: "BOOL", scale: "1"}
+      units:
+        { type: "String", readWrite: "R", defaultValue: "no"}
+deviceCommands:
+  -
+    name: "Pump"
+    set:
+      - { index: "1", operation: "set", deviceResource: "Pump" }
+    get:
+      - { index: "1", operation: "get", deviceResource: "Pump" }
+coreCommands:
+  -
+    name: "Pump"
+    get:
+      path: "/api/v1/device/{deviceId}/Pump"
+      responses:
+        -
+          code: "200"
+          description: "Get the Status"
+          expectedValues: ["Pump"]
+        -
+          code: "500"
+          description: "internal server error"
+          expectedValues: []
+    put:
+      path: "/api/v1/device/{deviceId}/Pump"
+      parameterNames: ["Pump"]
+      responses:
+        -
+          code: "204"
+          description: "Set the Configuration"
+          expectedValues: []
+        -
+          code: "500"
+          description: "internal server error"
+          expectedValues: []
