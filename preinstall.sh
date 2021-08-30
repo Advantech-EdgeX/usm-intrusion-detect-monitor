@@ -31,6 +31,7 @@ sudo pip install paho-mqtt opencv-python
 # Required library and tools
 sudo apt install -y \
     default-jre \
+    librxtx-java \
     jq \
     net-tools \
     mosquitto-clients
