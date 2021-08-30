@@ -11,7 +11,7 @@
 <slave id="1" enabled="true" name="WISE-4012" implementation="modbus">
 <holding_registers>
 <register address="0" value="35386" name="Temperature"/>
-<register address="1" value="1966" name="WaterLevel"/>
+<register address="1" value="19660" name="WaterLevel"/>
 </holding_registers>
 <coils>
 <coil address="16" value="0" name="Light"/>
