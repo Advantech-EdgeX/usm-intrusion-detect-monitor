@@ -1,6 +1,6 @@
 #!/bin/sh
 
-defaultValue=2
+defaultValue=20
 
 currentValue=$(curl -s -X GET \
 http://172.17.0.1:49991/api/v1/device/name/WISE-4012/WaterLevel | jq '.readings[0].value | tonumber')
