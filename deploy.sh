@@ -20,7 +20,7 @@ cd notifications
 cd $DIR
 
 cd wise-export
-./create_wise_datahub_edgex_fuji.sh
+sudo ./create_wise_datahub_edgex_fuji.sh
 cd $DIR
 
 # cd modbus/simulator

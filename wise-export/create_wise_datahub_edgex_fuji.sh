@@ -5,15 +5,15 @@
 #########################
 
 Enable="true"
-NodeID="cc36ad47-59d8-43f6-93d3-2234cb57dc19"
-AccessKey="5c42ef522c2dea7670cf944799698bje"
-APIURL="https://api-dccs-ensaas.sa.wise-paas.com/"
+# NodeID="cc36ad47-59d8-43f6-93d3-2234cb57dc19"
+# AccessKey="5c42ef522c2dea7670cf944799698bje"
+# APIURL="https://api-dccs-ensaas.sa.wise-paas.com/"
 DeviceNames="WISE-4012, FATEKPLC, Alert"
 ResourceWritable="FATEKPLC=Pump"
 
-# NodeID="45316a9a-014e-49b3-8471-f16ae5922524"
-# AccessKey="64abf2de2910644da62456f0470bealb"
-# APIURL="https://api-dccs-ensaas.hz.wise-paas.com.cn/"
+NodeID="45316a9a-014e-49b3-8471-f16ae5922524"
+AccessKey="64abf2de2910644da62456f0470bealb"
+APIURL="https://api-dccs-ensaas.hz.wise-paas.com.cn/"
 # DeviceNames="MQTTAnalyticservice, Random-Integer-Generator01"
 # ResourceWritable="WISE-4012=Pump, WISE-4012=WaterLevel
 
