@@ -1,7 +1,6 @@
 #!/bin/bash
 
 DIR=$PWD
-CMD=../cmd
 
 sudo docker-compose -f docker-compose-edgex-china-challenge.yml up -d
 sudo docker restart edgex-wrapper
