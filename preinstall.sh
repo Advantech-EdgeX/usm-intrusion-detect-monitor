@@ -26,7 +26,7 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 sudo apt install -y \
     python3-pip
 
-sudo pip install paho-mqtt opencv-python
+sudo pip3 install paho-mqtt opencv-python
 
 # Required library and tools
 sudo apt install -y \
