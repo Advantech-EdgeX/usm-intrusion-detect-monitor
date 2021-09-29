@@ -107,10 +107,14 @@
 Before the installation, meet the following prerequisites.
 1.	Prepare the machine: Advantech EI-52 with Ubuntu Linux 20.04 LTS preinstalled.
 2.	A USB webcam that the resolution limit is 720p.
+## Clone source code of the video-inference project
+ ```bash
+ sudo git clone https://github.com/Advantech-Edgex/video-analytics-serving.git -b feature-webcam video-inference
+ ```
 ## Install required software
 To install the required software. E.g. Docker, curl, mosquitto-clients…, which will take some time.
  ```bash
-./preinstall.sh
+make install
 ```
 ## Deploy
 Before the deployment, we may modify the Modbus device service according to physical hardware configuration.
@@ -125,5 +129,5 @@ To deploy that will be finished tasks:
 * Setup the WISE-PaaS APP service.
 * Setup the video AI service.
  ```bash
-./deploy.sh
+make deploy
 ```
