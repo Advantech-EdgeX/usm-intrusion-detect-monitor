@@ -23,15 +23,51 @@ help:
 install:
 	./preinstall.sh
 
-deploy: run edgex-rule edgex-notifications wise-export video-inference
+deploy-sed:
+	sed -i "s/.*rtsp_ip=.*/      - rtsp_ip=$$jsmpeg_rtsp_ip/g" "jsmpeg/compose-files/docker-compose$(JSMPEG_DATA_SRC).yml"
+	sed -i "s/.*rtsp_port=.*/      - rtsp_port=$$jsmpeg_rtsp_port/g" "jsmpeg/compose-files/docker-compose$(JSMPEG_DATA_SRC).yml"
+	sed -i "s/.*rtsp_url_path=.*/      - rtsp_url_path=$$jsmpeg_rtsp_url_path/g" "jsmpeg/compose-files/docker-compose$(JSMPEG_DATA_SRC).yml"
+
+deploy-ipcam: JSMPEG_DATA_SRC=
+deploy-ipcam: deploy-sed jsmpeg-up
+deploy-ipcam-down: JSMPEG_DATA_SRC=
+deploy-ipcam-down: jsmpeg-down
+
+deploy-ov: JSMPEG_DATA_SRC=-ov
+deploy-ov: deploy-sed jsmpeg-up mqtt-up video-inference
+deploy-ov-down: JSMPEG_DATA_SRC=-ov
+deploy-ov-down: jsmpeg-down mqtt-down video-inference-stop
+
+deploy-nv: JSMPEG_DATA_SRC=-nv
+deploy-nv: deploy-sed jsmpeg-up mqtt-up
+deploy-nv-down: JSMPEG_DATA_SRC=-nv
+deploy-nv-down: jsmpeg-down mqtt-down
+
+mqtt-up:
+	docker-compose -f docker-compose-edgex.yml up -d mqtt-broker
+mqtt-down:
+	docker-compose -f docker-compose-edgex.yml down
+	# docker-compose -f docker-compose-edgex.yml down edgex-mqtt-broker
+
+jsmpeg-up:
+	docker-compose -f "jsmpeg/compose-files/docker-compose$(JSMPEG_DATA_SRC).yml" up -d
+jsmpeg-down:
+	docker-compose -f "jsmpeg/compose-files/docker-compose$(JSMPEG_DATA_SRC).yml" down
+
+deploy: JSMPEG_DATA_SRC=-ov
+deploy: deploy-sed jsmpeg-up run edgex-rule edgex-notifications wise-export video-inference-record-frames
 
 run:
-	sudo docker-compose -f docker-compose-edgex-china-challenge.yml up -d
-	sudo docker restart edgex-wrapper
-	sudo docker restart edgex-device-mqtt
-	sudo docker pull 'advantech1234/video-analytics-serving-gstreamer:latest'
-	sudo docker tag 'advantech1234/video-analytics-serving-gstreamer:latest' 'video-analytics-serving-gstreamer:latest'
-	-sudo docker stop video-analytics-serving-gstreamer
+	docker-compose -f docker-compose-edgex.yml up -d
+	docker restart edgex-wrapper
+	docker restart edgex-device-mqtt
+	# docker pull 'video-analytics-serving-gstreamer:v0.6.1-1.0'
+	# docker tag 'advantech1234/video-analytics-serving-gstreamer:v0.6.1-1.0' 'video-analytics-serving-gstreamer:v0.6.1-1.0'
+	-docker stop video-analytics-serving-gstreamer
+
+deploy-down: JSMPEG_DATA_SRC=-ov
+deploy-down: jsmpeg-down video-inference-stop
+	docker-compose -f docker-compose-edgex.yml down
 
 edgex-rule:
 	cd ruleengine && ./create_rules.sh
@@ -47,9 +83,14 @@ simulator:
 
 video-inference:
 	cd video-inference && ./run.sh
+video-inference-record-frames:
+	cd video-inference && ./run.sh record_frames
+video-inference-stop:
+	cd video-inference && ./run.sh stop
+	-python3 kill.py mqtt_client.py
 
 stop:
 	sudo ./stop-dockers.sh
 
 clean: stop
-	sudo ./reset-dockers.sh -f docker-compose-edgex-china-challenge.yml
+	sudo ./reset-dockers.sh -f docker-compose-edgex.yml

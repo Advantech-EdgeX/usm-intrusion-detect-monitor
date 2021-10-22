@@ -105,23 +105,37 @@
 
 ## Before the installation
 Before the installation, meet the following prerequisites.
-1.	Prepare the machine: Advantech EI-52 with Ubuntu Linux 20.04 LTS preinstalled.
-2.	A USB webcam that the resolution limit is 720p.
+1.	Prepare the machine with Ubuntu Linux 20.04 LTS preinstalled.
+2.	A USB webcam that the resolution limit is 1080p.
+3.	A IP Camera support RTSP video streaming.
 ## Clone source code of the video-inference project
  ```bash
- sudo git clone https://github.com/Advantech-Edgex/video-analytics-serving.git -b feature-webcam video-inference
+ sudo git clone https://github.com/Advantech-Edgex/video-analytics-serving.git -b feature-full video-inference
  ```
 ## Install required software
 To install the required software. E.g. Docker, curl, mosquitto-clients…, which will take some time.
  ```bash
 make install
 ```
-## Deploy
-Before the deployment, we may modify the Modbus device service according to physical hardware configuration.
-* ./modbus/configuration.toml
-* ./modbus/WISE-4012.yaml
-* ./modbus/FATEKPLC.yaml
+## Deploy IPCam RTSP Video Streaming
+ ```bash
+make deploy-ipcam jsmpeg_rtsp_ip="admin:admin@172.22.24.42" jsmpeg_rtsp_port="554" jsmpeg_rtsp_url_path="multimedia\/video1"
+make deploy-ipcam-down
+```
 
+## Deploy Nvidia Jetson Video Inference
+ ```bash
+make deploy-nv jsmpeg_rtsp_ip="172.22.24.120" jsmpeg_rtsp_port="8554" jsmpeg_rtsp_url_path="ds-test"
+make deploy-nv-down
+```
+
+## Deploy OpenVINO Video Inference
+ ```bash
+make deploy-ov
+make deploy-ov-down
+```
+
+## Deploy
 To deploy that will be finished tasks:
 * Start all Edge microservice that including EdgeX, video AI service, SMTP server...
 * Setup the rule engine.
