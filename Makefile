@@ -35,6 +35,7 @@ deploy-ipcam-down: jsmpeg-down
 
 deploy-ov: JSMPEG_DATA_SRC=-ov
 deploy-ov: deploy-sed jsmpeg-up mqtt-up video-inference
+deploy-ov-debug: deploy-sed jsmpeg-up mqtt-up
 deploy-ov-down: JSMPEG_DATA_SRC=-ov
 deploy-ov-down: jsmpeg-down mqtt-down video-inference-stop
 
@@ -47,7 +48,6 @@ mqtt-up:
 	docker-compose -f docker-compose-edgex.yml up -d mqtt-broker
 mqtt-down:
 	docker-compose -f docker-compose-edgex.yml down
-	# docker-compose -f docker-compose-edgex.yml down edgex-mqtt-broker
 
 jsmpeg-up:
 	docker-compose -f "jsmpeg/compose-files/docker-compose$(JSMPEG_DATA_SRC).yml" up -d
