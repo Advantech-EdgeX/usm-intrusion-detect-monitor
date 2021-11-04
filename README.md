@@ -86,7 +86,7 @@
  $ make deploy-ov-down
  ```
 
-## OpenVINO VAS Configuration Combination
+## OpenVINO Inference Configuration Combination
 
 1. Use **video-inference/run.conf** file to compose different run-time configuration.
 2. Hardware accelerator support below devices. Use the variable DEVICE to configure it. Ex. _DEVICE="CPU"_.
@@ -120,27 +120,27 @@
 
 ## Logs and Debugging
 
-### OpenVINO VAS container logs
+### OpenVINO inference container logs
 
 The container name is __video-analytics-serving-gstreamer__
  ```bash
  $ docker logs video-analytics-serving-gstreamer
  ```
 
-### OpenVINO VAS Debugging
+### OpenVINO inference Debugging
 
-Run VAS server and client on foreground.
+Run inference server and client on foreground.
 
 1. Comment run.conf DETACH=...
 2. Up services mqtt and jsmpeg
  ```bash
  $ make deploy-ov-debug
  ```
-3. Run VAS server foreground
+3. Run inference server foreground
  ```bash
  $ cd video-inference; ./run.sh server
  ```
-4. Run VAS client foreground in another terminal
+4. Run inference client foreground in another terminal
  ```bash
  $ cd video-inference; ./run.sh client
  ```
