@@ -8,6 +8,7 @@ sudo apt install -y \
     ca-certificates \
     curl \
     gnupg \
+    git \
     lsb-release
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
@@ -35,3 +36,19 @@ sudo apt install -y \
     jq \
     net-tools \
     mosquitto-clients
+
+# Clone Intel/OpenVINO/video-analytics-inference project from github Advantech-EdgeX
+echo "Try to clone Intel/OpenVINO/video-analytics-inference project..."
+if [ -d "video-inference" ]; then
+	echo "!!! The video-inference/ directory exist! Skip clone Intel/OpenVINO/video-analytics-inference project!!!"
+else
+	git clone https://github.com/Advantech-Edgex/video-analytics-serving.git -b feature-full video-inference
+fi
+
+# Clone jsmpeg project from github Advantech-EdgeX
+echo "Try to clone JSMpeg project..."
+if [ -d "jsmpeg" ]; then
+	echo "!!! The jsmpeg/ directory exist! Skip clone JSMpeg project!!!"
+else
+	git clone https://github.com/Advantech-Edgex/jsmpeg.git -b develop jsmpeg
+fi
