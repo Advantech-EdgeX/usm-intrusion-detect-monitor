@@ -18,21 +18,11 @@
 
 [comment]: <> (add user to docker group)
 
-* Clone video-analytics-inference project from github Advantech-Edgex
- ```bash
- $ git clone https://github.com/Advantech-Edgex/video-analytics-serving.git -b feature-full video-inference
- ```
+## Verify JSMpeg Data Path by Displaying RTSP Video Stream on the Web Browser
 
-* Clone jsmpeg project from github Advantech-Edgex
- ```bash
- $ git clone https://github.com/Advantech-Edgex/jsmpeg.git -b develop jsmpeg
- ```
+### Case 1: Deploy JSMpeg for IPCam RTSP Video Streaming
 
-## Deploy Video Streaming
-
-### Deploy IPCam RTSP Video Streaming
-
-1. Suppose IPCam RTSP service URL is __rtsp://admin:admin@172.22.24.42/multimedia/video1__, then use below command to deploy.
+1. Suppose IPCam RTSP service URL is __rtsp://admin:admin@172.22.24.42/multimedia/video1__, then use below command to deploy and start the service.
  ```bash
  $ make deploy-ipcam jsmpeg_rtsp_ip="admin:admin@172.22.24.42" jsmpeg_rtsp_port="554" jsmpeg_rtsp_url_path="multimedia\/video1"
  ```
@@ -42,21 +32,58 @@
  $ make deploy-ipcam-down
  ```
 
-### Deploy NVIDIA Jetson Video Inference
+### Case 2: Deploy NVIDIA Jetson Video Inference
 
-1. Suppose NVIDIA Jetson developer kit have RTSP service on __rtsp://172.22.24.120:8554/ds-test__, then use below command to deploy.
+1. Suppose NVIDIA Jetson developer kit have RTSP service on __rtsp://172.22.24.120:8554/ds-test__, then use below command to deploy and start the service.
  ```bash
  $ make deploy-nv jsmpeg_rtsp_ip="172.22.24.120" jsmpeg_rtsp_port="8554" jsmpeg_rtsp_url_path="ds-test"
  ```
-2. Check the running service by **http://localhost:7880/** or **http://${host_ipv4}:7880/**.
+2. Check the inference video stream by **http://localhost:7880/** or **http://${host_ipv4}:7880/**.
 3. Stop and clear the service by the command.
  ```bash
  make deploy-nv-down
  ```
 
-### Deploy OpenVINO Video Analytics Inference
+## Deploy OpenVINO Video Inference Service
 
-1. Run up service with OpenVINO current configuration __video-inference/run.conf__.
+[comment]: <> (display inrefenced image/video on local window)
+
+### OpenVINO Inference Configuration Combination
+
+1. Before deploy OpenVINO service, we have to compose run-time configuration by editing **video-inference/run.conf** file.
+
+2. These Hardware accelerator are supported. Use the variable **DEVICE** to configure it. Ex. _DEVICE="CPU"_.
+    * CPU
+    * GPU
+    * HDDL
+
+[comment]: <> (multiple devices?)
+
+3. Video Data Source
+
+   3-1. Below types are supported. Choose it with the variable **SOURCE_TYPE**. Ex. _SOURCE_TYPE="--src-file"_.
+  
+    * --src-webcam
+    * --src-ipcam
+    * --src-file
+    * --src-http
+
+   3-2. According to **SOURCE_TYPE**, there are predefined **MEDIA** setting choices in **video-inference/run.conf**.
+
+4. Deep Learning Models and Gstreamer Pipelines
+
+   There are 4 predefined model and pipeline combination in **video-inference/run.conf**. Choose one of them and comment others out.
+
+    * model: person-vehicle-bike-detection-crossroad-1016
+    * model: yolo-v4-tf
+    * model: face-detection-retail-0005
+    * model: action-recognition-0001-decoder
+
+[comment]: <> (user download?)
+
+### Case 3: Deploy OpenVINO Video Inference
+
+1. Run up service with the configuration __video-inference/run.conf__.
  ```bash
  $ make deploy-ov
  ```
@@ -66,7 +93,7 @@
  $ make deploy-ov-down
  ```
 
-### Deploy Person Intrusion Service by OpenVINO Video Analytics Inference record_frames sample
+### Case 4: Deploy Person Intrusion Service
 
 * The following tasks involving in the deploy:
   * Edge microservices including EdgeX, video AI service, SMTP server...
@@ -80,43 +107,11 @@
  $ make deploy
  ```
 2. Use web browser to view the inference video on **http://localhost:7880/** or **http://${host_ipv4}:7880/**.
-3. Check the intrusion images on MailHog SMTP server web UI **http://localhost/** or **http://${host_ipv4}:7880/**.
+3. Check the intrusion images on MailHog SMTP server web UI **http://localhost/** or **http://${host_ipv4}/**.
 4. Stop and clear the service by the command.
  ```bash
  $ make deploy-ov-down
  ```
-
-## OpenVINO Inference Configuration Combination
-
-1. Use **video-inference/run.conf** file to compose different run-time configuration.
-2. Hardware accelerator support below devices. Use the variable DEVICE to configure it. Ex. _DEVICE="CPU"_.
-    * CPU
-    * GPU
-    * HDDL
-
-[comment]: <> (multiple devices?)
-
-3. Video Data Source
-
-   3-1. Below types are supported. Choose it with the variable SOURCE_TYPE. Ex. _SOURCE_TYPE="--src-file"_.
-  
-    * --src-webcam
-    * --src-ipcam
-    * --src-file
-    * --src-http
-
-   3-2. According to SOURCE_TYPE and reference media examples in run.conf comment, to configure MEDIA variable.
-
-4. Deep Learning Models and Gstreamer Pipelines
-
-   There are 4 predefined model and pipeline combination. Choose one of them and comment others out.
-
-    * model: person-vehicle-bike-detection-crossroad-1016
-    * model: yolo-v4-tf
-    * model: face-detection-retail-0005
-    * model: action-recognition-0001-decoder
-
-[comment]: <> (user download?)
 
 ## Logs and Debugging
 
