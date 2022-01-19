@@ -4,19 +4,21 @@
 
 ## Installation prerequisites
 * Ubuntu Linux 20.04 LTS 
-* [Install and configure Intel OpenVINO Toolkit Version 2021.4.689 for Linux](https://docs.openvino.ai/latest/openvino_docs_install_guides_installing_openvino_linux.html)
+* Install CMake 3.13 or higher
+* [Install and Configure Intel OpenVINO Toolkit Version 2021.4.689 or higher](https://docs.openvino.ai/latest/openvino_docs_install_guides_installing_openvino_linux.html)
   * [Intel Vision Accelerator Design with Intel Movidius VPUs](https://docs.openvino.ai/2021.4/openvino_docs_install_guides_installing_openvino_linux_ivad_vpu.html)
 * A USB webcam
 * A IP Camera support RTSP video streaming
 
 ## Install required software packages
+
+[comment]: <> (Should feature-full branch be published on https://github.com/Advantech-Edgex/video-analytics-serving.git?)
+
 * Use the below make command to install the required software. E.g. Docker, curl, mosquitto-clients…, it takes time.
  ```bash
  $ make install
  ```
 * After installation, please __reboot__ system.
-
-[comment]: <> (add user to docker group)
 
 ## Verify JSMpeg Data Path by Displaying RTSP Video Stream on the Web Browser
 
@@ -47,6 +49,7 @@
 ## Deploy OpenVINO Video Inference Service
 
 [comment]: <> (display inrefenced image/video on local window)
+[comment]: <> (display inrefenced image/video on vlc not browser)
 
 ### OpenVINO Inference Configuration Combination
 
@@ -70,7 +73,12 @@
 
    3-2. According to **SOURCE_TYPE**, there are predefined **MEDIA** setting choices in **video-inference/run.conf**.
 
-4. Deep Learning Models and Gstreamer Pipelines
+4. Download All Predefined Deep Learning Models
+ ```bash
+ $ make video-inference-model
+ ```
+
+5. Configure Deep Learning Models and Gstreamer Pipelines
 
    There are 4 predefined model and pipeline combination in **video-inference/run.conf**. Choose one of them and comment others out.
 
@@ -79,7 +87,10 @@
     * model: face-detection-retail-0005
     * model: action-recognition-0001-decoder
 
-[comment]: <> (user download?)
+6. Docker Pull Video Inference Images
+ ```bash
+ $ make deploy-docker-vi
+ ```
 
 ### Case 3: Deploy OpenVINO Video Inference
 
@@ -107,13 +118,17 @@
  $ make deploy
  ```
 2. Use web browser to view the inference video on **http://localhost:7880/** or **http://${host_ipv4}:7880/**.
-3. Check the intrusion images on MailHog SMTP server web UI **http://localhost/** or **http://${host_ipv4}/**.
-4. Stop and clear the service by the command.
+3. Use mqtt client with topic **vaserving** to monitor inference metadata
+ ```bash
+ $ mosquitto_sub -h ${host_ip} -t 'vaserving'
+ ```
+4. Check the intrusion images on MailHog SMTP server web UI **http://localhost/** or **http://${host_ipv4}/**.
+5. Stop and clear the service by the command.
  ```bash
  $ make deploy-ov-down
  ```
 
-## Logs and Debugging
+## Logs, Debugging and enhancement
 
 ### OpenVINO inference container logs
 
@@ -122,7 +137,7 @@ The container name is __video-analytics-serving-gstreamer__
  $ docker logs video-analytics-serving-gstreamer
  ```
 
-### OpenVINO inference Debugging
+### OpenVINO inference debug
 
 Run inference server and client on foreground.
 
@@ -139,6 +154,19 @@ Run inference server and client on foreground.
  ```bash
  $ cd video-inference; ./run.sh client
  ```
+5. Stop and clear the service by the command.
+ ```bash
+ $ make deploy-ov-down
+ ```
+
+### Change model of "Case 4: Deploy Person Intrusion Service"
+
+1. Update video-inference/models_list/models.list.yml according to new model
+2. Download models again
+ ```bash
+ $ make video-inference-model
+ ```
+3. According to used model person label id to update **video-inference/samples/record_frames/mqtt_client.py**
 
 [comment]: <> (jsmpeg debug?)
 

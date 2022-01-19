@@ -14,8 +14,9 @@
 #  *******************************************************************************/
 SHELL := /bin/bash
 
-.PHONY: help install deploy run edgex-rule edgex-notifications wise-export simulator video-inference stop clean
-.SILENT: help install deploy run edgex-rule edgex-notifications wise-export simulator video-inference stop clean
+.PHONY: help install deploy run edgex-rule edgex-notifications wise-export simulator video-inference stop deploy-ipcam deploy-ipcam-down deploy-ov deploy-ov-debug deploy-ov-down deploy-nv deploy-nv-down mqtt-up mqtt-down jsmpeg-up jsmpeg-down deploy-down video-inference video-inference-record-frames video-inference-stop
+.SILENT: help install deploy run edgex-rule edgex-notifications wise-export simulator video-inference stop deploy-ipcam deploy-ipcam-down deploy-ov deploy-ov-debug deploy-ov-down deploy-nv deploy-nv-down mqtt-up mqtt-down jsmpeg-up jsmpeg-down deploy-down video-inference video-inference-record-frames video-inference-stop
+
 
 help:
 	echo "Refer to README.md"
@@ -37,37 +38,43 @@ deploy-ov: JSMPEG_DATA_SRC=-ov
 deploy-ov: deploy-sed jsmpeg-up mqtt-up video-inference
 deploy-ov-debug: deploy-sed jsmpeg-up mqtt-up
 deploy-ov-down: JSMPEG_DATA_SRC=-ov
-deploy-ov-down: jsmpeg-down mqtt-down video-inference-stop
+deploy-ov-down: smtp-down video-inference-stop jsmpeg-down mqtt-down
 
 deploy-nv: JSMPEG_DATA_SRC=-nv
 deploy-nv: deploy-sed jsmpeg-up mqtt-up
 deploy-nv-down: JSMPEG_DATA_SRC=-nv
 deploy-nv-down: jsmpeg-down mqtt-down
 
+smtp-down:
+	docker rm -f smtp-server
 mqtt-up:
-	docker-compose -f docker-compose-edgex.yml up -d mqtt-broker
+	docker-compose -f edgex-scripts/compose-files/docker-compose-fuji-ei-7.yml up -d mqtt-broker
 mqtt-down:
-	docker-compose -f docker-compose-edgex.yml down
+	-docker-compose -f edgex-scripts/compose-files/docker-compose-fuji-ei-7.yml down
 
 jsmpeg-up:
 	docker-compose -f "jsmpeg/compose-files/docker-compose$(JSMPEG_DATA_SRC).yml" up -d
 jsmpeg-down:
-	docker-compose -f "jsmpeg/compose-files/docker-compose$(JSMPEG_DATA_SRC).yml" down
+	-docker-compose -f "jsmpeg/compose-files/docker-compose$(JSMPEG_DATA_SRC).yml" down
 
 deploy: JSMPEG_DATA_SRC=-ov
 deploy: deploy-sed jsmpeg-up run edgex-rule edgex-notifications wise-export video-inference-record-frames
 
+deploy-docker-vi:
+	docker pull 'advantech1234/jsmpeg:1.0.0'
+	docker pull 'advantech1234/video-analytics-serving-gstreamer:v0.6.1-1.0'
+	docker tag 'advantech1234/video-analytics-serving-gstreamer:v0.6.1-1.0' 'video-analytics-serving-gstreamer:latest'
+
 run:
-	docker-compose -f docker-compose-edgex.yml up -d
+	docker-compose -f edgex-scripts/compose-files/docker-compose-fuji-ei-7.yml -f docker-compose-edgex.yml up -d
 	docker restart edgex-wrapper
 	docker restart edgex-device-mqtt
-	# docker pull 'video-analytics-serving-gstreamer:v0.6.1-1.0'
-	# docker tag 'advantech1234/video-analytics-serving-gstreamer:v0.6.1-1.0' 'video-analytics-serving-gstreamer:v0.6.1-1.0'
 	-docker stop video-analytics-serving-gstreamer
 
 deploy-down: JSMPEG_DATA_SRC=-ov
 deploy-down: jsmpeg-down video-inference-stop
 	docker-compose -f docker-compose-edgex.yml down
+	docker-compose -f edgex-scripts/compose-files/docker-compose-fuji-ei-7.yml down
 
 edgex-rule:
 	cd ruleengine && ./create_rules.sh
@@ -89,8 +96,8 @@ video-inference-stop:
 	cd video-inference && ./run.sh stop
 	-python3 kill.py mqtt_client.py
 
+video-inference-model:
+	cd video-inference && ./tools/model_downloader/model_downloader.sh --model-list models_list/models.list.yml
+
 stop:
 	sudo ./stop-dockers.sh
-
-clean: stop
-	sudo ./reset-dockers.sh -f docker-compose-edgex.yml

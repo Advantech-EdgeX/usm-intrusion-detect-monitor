@@ -16,6 +16,12 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o 
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
     $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu `lsb_release -cs` test"
+sudo apt update
+
+sudo apt install -y docker.io
 sudo apt install -y docker-ce docker-ce-cli containerd.io
 
 # Install docker-compose
@@ -36,6 +42,9 @@ sudo apt install -y \
     jq \
     net-tools \
     mosquitto-clients
+
+# Add the connected user "$USER" to the docker group.
+sudo gpasswd -a $USER docker
 
 # Clone Intel/OpenVINO/video-analytics-inference project from github Advantech-EdgeX
 echo "Try to clone Intel/OpenVINO/video-analytics-inference project..."
