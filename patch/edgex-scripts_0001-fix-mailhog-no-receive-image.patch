@@ -1,0 +1,152 @@
+From b23a440966d42866d7d47c67da3ed2f8fede428e Mon Sep 17 00:00:00 2001
+From: light lu <light.lu@advantech.com.tw>
+Date: Mon, 17 Jan 2022 16:48:58 +0800
+Subject: [PATCH] fix: mailhog no receive image
+
+---
+ compose-files/docker-compose-fuji-ei-7.yml | 74 ++++++++++++++++------
+ 1 file changed, 53 insertions(+), 21 deletions(-)
+
+diff --git a/compose-files/docker-compose-fuji-ei-7.yml b/compose-files/docker-compose-fuji-ei-7.yml
+index 8322f6c..da6c5f6 100644
+--- a/compose-files/docker-compose-fuji-ei-7.yml
++++ b/compose-files/docker-compose-fuji-ei-7.yml
+@@ -76,6 +76,12 @@ services:
+             - edgex-core-config-seed
+     environment:
+       <<: *common-variables
++      Smtp_Host: 172.17.0.1
++      Smtp_Port: 25
++      Smtp_Username:
++      Smtp_Password:
++      Smtp_Sender: admin@edgex.foundry
++      Smtp_Subject: EdgeX Notification
+     volumes:
+       - db-data:/data/db
+       - log-data:/edgex/logs
+@@ -238,7 +244,7 @@ services:
+     image: edgexfoundry/docker-app-service-configurable:1.1.0
+     ports:
+       - "48100:48100"
+-    container_name: edgex-app-service-configurable-rules
++    container_name: mqtt-export-service
+     hostname: edgex-app-service-configurable-rules
+     networks:
+       edgex-network:
+@@ -247,13 +253,20 @@ services:
+     environment:
+       <<: *common-variables
+       edgex_service: http://edgex-app-service-configurable-rules:48100
+-      edgex_profile: rules-engine
++      edgex_profile: mqtt-export
+       Service_Host: edgex-app-service-configurable-rules
+       MessageBus_SubscribeHost_Host: edgex-core-data
++      Binding_PublishTopic: events
++      Writable_Pipeline_Functions_MQTTSend_Addressable_Address: mqtt-broker
++      Writable_Pipeline_Functions_MQTTSend_Addressable_Port: 1883
++      Writable_Pipeline_Functions_MQTTSend_Addressable_Protocol: tcp
++      Writable_Pipeline_Functions_MQTTSend_Addressable_Publisher: edgex
++      Writable_Pipeline_Functions_MQTTSend_Addressable_Topic: edgex/MQTTExport
+     depends_on:
+       - consul
+       - logging
+       - data
++      - mqtt-broker
+ 
+   rulesengine:
+     image: advantech1234/kuiper:1.1.1-alpine
+@@ -449,30 +462,38 @@ services:
+       - log-data:/edgex/logs
+       - consul-config:/consul/config
+       - consul-data:/consul/data
+-      - ./mqtt-profile:/custom-config
++      - ./mqtt:/custom-config
+     depends_on:
+       - data
+       - command
+     entrypoint:
+       - /device-mqtt
++      - --registry=consul://edgex-core-consul:8500
+       - --confdir=/custom-config
+ 
+-  # device-modbus:
+-  #   image: edgexfoundry/docker-device-modbus-go:1.1.1
+-  #   ports:
+-  #     - "49991:49991"
+-  #   container_name: edgex-device-modbus
+-  #   hostname: edgex-device-modbus
+-  #   networks:
+-  #     - edgex-network
+-  #   volumes:
+-  #     - db-data:/data/db
+-  #     - log-data:/edgex/logs
+-  #     - consul-config:/consul/config
+-  #     - consul-data:/consul/data
+-  #   depends_on:
+-  #     - data
+-  #     - command
++  device-modbus:
++    image: edgexfoundry/docker-device-modbus-go:1.1.1
++    ports:
++      - "49991:49991"
++    container_name: edgex-device-modbus
++    hostname: edgex-device-modbus
++    networks:
++      - edgex-network
++    devices:
++      - /dev/ttyS0:/dev/ttyS0
++    volumes:
++      - db-data:/data/db
++      - log-data:/edgex/logs
++      - consul-config:/consul/config
++      - consul-data:/consul/data
++      - ./modbus:/custom-config
++    depends_on:
++      - data
++      - command
++    entrypoint:
++      - /device-modbus
++      - --registry=consul://edgex-core-consul:8500
++      - --confdir=/custom-config
+ 
+   device-rest:
+     image: edgexfoundry/docker-device-rest-go:1.1.1
+@@ -488,7 +509,7 @@ services:
+     depends_on:
+       - data
+       - command
+-
++  #
+   # device-snmp:
+   #   image: edgexfoundry/docker-device-snmp-go:1.1.1
+   #   ports:
+@@ -556,7 +577,6 @@ services:
+ #################################################################
+ # Tooling
+ #################################################################
+-
+   portainer:
+     image:  portainer/portainer
+     ports:
+@@ -567,6 +587,18 @@ services:
+       - portainer_data:/data
+     depends_on:
+       - volume
++    networks:
++        - edgex-network
++
++  smtp-server:
++    image: mailhog/mailhog
++    ports:
++      - "80:8025"
++      - "25:1025"
++    restart: always
++    container_name: smtp-server
++    networks:
++      - edgex-network
+ 
+ networks:
+   edgex-network:
+-- 
+2.25.1
+

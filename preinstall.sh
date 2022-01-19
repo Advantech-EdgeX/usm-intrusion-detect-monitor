@@ -47,17 +47,31 @@ sudo apt install -y \
 sudo gpasswd -a $USER docker
 
 # Clone Intel/OpenVINO/video-analytics-inference project from github Advantech-EdgeX
-echo "Try to clone Intel/OpenVINO/video-analytics-inference project..."
-if [ -d "vaserving" ]; then
-	echo "!!! The vaserving/ directory exist! Skip clone Intel/OpenVINO/video-analytics-inference project!!!"
+PROJECT=vaserving
+echo "Try to clone $PROJECT project..."
+if [ -d "$PROJECT" ]; then
+	echo "!!! The ${PROJECT}/ directory exist! Skip git clone !!!"
 else
-	git clone https://github.com/Advantech-Edgex/video-analytics-serving.git -b feature-full vaserving
+	git clone https://github.com/Advantech-Edgex/video-analytics-serving.git -b feature-full "$PROJECT"
 fi
 
 # Clone jsmpeg project from github Advantech-EdgeX
-echo "Try to clone JSMpeg project..."
-if [ -d "jsmpeg" ]; then
-	echo "!!! The jsmpeg/ directory exist! Skip clone JSMpeg project!!!"
+PROJECT=jsmpeg
+echo "Try to clone $PROJECT project..."
+if [ -d "$PROJECT" ]; then
+	echo "!!! The ${PROJECT}/ directory exist! Skip git clone !!!"
 else
-	git clone https://github.com/Advantech-Edgex/jsmpeg.git -b develop jsmpeg
+	git clone https://github.com/Advantech-Edgex/jsmpeg.git -b develop "$PROJECT"
+fi
+
+# Clone edgex-scripts.git project from github Advantech-EdgeX
+PROJECT=edgex-scripts
+echo "Try to clone $PROJECT project..."
+if [ -d "$PROJECT" ]; then
+	echo "!!! The ${PROJECT}/ directory exist! Skip git clone !!!"
+else
+	git clone https://github.com/Advantech-EdgeX/edgex-scripts.git -b master "$PROJECT"
+	if [ "$?" = 0 ] && [ -d "patch" ] && [ -f "patch/edgex-scripts_0001-fix-mailhog-no-receive-image.patch" ]; then
+		cat "patch/edgex-scripts_0001-fix-mailhog-no-receive-image.patch" | patch -p1 -d "$PROJECT"
+	fi
 fi
