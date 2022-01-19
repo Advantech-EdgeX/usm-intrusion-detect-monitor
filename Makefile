@@ -14,8 +14,8 @@
 #  *******************************************************************************/
 SHELL := /bin/bash
 
-.PHONY: help install deploy run edgex-rule edgex-notifications wise-export simulator video-inference stop deploy-ipcam deploy-ipcam-down deploy-ov deploy-ov-debug deploy-ov-down deploy-nv deploy-nv-down mqtt-up mqtt-down jsmpeg-up jsmpeg-down deploy-down video-inference video-inference-record-frames video-inference-stop
-.SILENT: help install deploy run edgex-rule edgex-notifications wise-export simulator video-inference stop deploy-ipcam deploy-ipcam-down deploy-ov deploy-ov-debug deploy-ov-down deploy-nv deploy-nv-down mqtt-up mqtt-down jsmpeg-up jsmpeg-down deploy-down video-inference video-inference-record-frames video-inference-stop
+.PHONY: help install deploy run edgex-rule edgex-notifications wise-export simulator vaserving stop deploy-ipcam deploy-ipcam-down deploy-ov deploy-ov-debug deploy-ov-down deploy-nv deploy-nv-down mqtt-up mqtt-down jsmpeg-up jsmpeg-down deploy-down vaserving vaserving-record-frames vaserving-stop
+.SILENT: help install deploy run edgex-rule edgex-notifications wise-export simulator vaserving stop deploy-ipcam deploy-ipcam-down deploy-ov deploy-ov-debug deploy-ov-down deploy-nv deploy-nv-down mqtt-up mqtt-down jsmpeg-up jsmpeg-down deploy-down vaserving vaserving-record-frames vaserving-stop
 
 
 help:
@@ -35,10 +35,10 @@ deploy-ipcam-down: JSMPEG_DATA_SRC=
 deploy-ipcam-down: jsmpeg-down
 
 deploy-ov: JSMPEG_DATA_SRC=-ov
-deploy-ov: deploy-sed jsmpeg-up mqtt-up video-inference
+deploy-ov: deploy-sed jsmpeg-up mqtt-up vaserving
 deploy-ov-debug: deploy-sed jsmpeg-up mqtt-up
 deploy-ov-down: JSMPEG_DATA_SRC=-ov
-deploy-ov-down: smtp-down video-inference-stop jsmpeg-down mqtt-down
+deploy-ov-down: smtp-down vaserving-stop jsmpeg-down mqtt-down
 
 deploy-nv: JSMPEG_DATA_SRC=-nv
 deploy-nv: deploy-sed jsmpeg-up mqtt-up
@@ -58,7 +58,7 @@ jsmpeg-down:
 	-docker-compose -f "jsmpeg/compose-files/docker-compose$(JSMPEG_DATA_SRC).yml" down
 
 deploy: JSMPEG_DATA_SRC=-ov
-deploy: deploy-sed jsmpeg-up run edgex-rule edgex-notifications wise-export video-inference-record-frames
+deploy: deploy-sed jsmpeg-up run edgex-rule edgex-notifications wise-export vaserving-record-frames
 
 deploy-docker-vi:
 	docker pull 'advantech1234/jsmpeg:1.0.0'
@@ -72,7 +72,7 @@ run:
 	-docker stop video-analytics-serving-gstreamer
 
 deploy-down: JSMPEG_DATA_SRC=-ov
-deploy-down: jsmpeg-down video-inference-stop
+deploy-down: jsmpeg-down vaserving-stop
 	docker-compose -f docker-compose-edgex.yml down
 	docker-compose -f edgex-scripts/compose-files/docker-compose-fuji-ei-7.yml down
 
@@ -88,16 +88,16 @@ wise-export:
 simulator:
 	cd modbus/simulator && ./run_simulator.sh
 
-video-inference:
-	cd video-inference && ./run.sh
-video-inference-record-frames:
-	cd video-inference && ./run.sh record_frames
-video-inference-stop:
-	cd video-inference && ./run.sh stop
+vaserving:
+	cd vaserving && ./run.sh
+vaserving-record-frames:
+	cd vaserving && ./run.sh record_frames
+vaserving-stop:
+	cd vaserving && ./run.sh stop
 	-python3 kill.py mqtt_client.py
 
-video-inference-model:
-	cd video-inference && ./tools/model_downloader/model_downloader.sh --model-list models_list/models.list.yml
+vaserving-model:
+	cd vaserving && ./tools/model_downloader/model_downloader.sh --model-list models_list/models.list.yml
 
 stop:
 	sudo ./stop-dockers.sh

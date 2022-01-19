@@ -53,7 +53,7 @@
 
 ### OpenVINO Inference Configuration Combination
 
-1. Before deploy OpenVINO service, we have to compose run-time configuration by editing **video-inference/run.conf** file.
+1. Before deploy OpenVINO service, we have to compose run-time configuration by editing **vaserving/run.conf** file.
 
 2. These Hardware accelerator are supported. Use the variable **DEVICE** to configure it. Ex. _DEVICE="CPU"_.
     * CPU
@@ -71,16 +71,16 @@
     * --src-file
     * --src-http
 
-   3-2. According to **SOURCE_TYPE**, there are predefined **MEDIA** setting choices in **video-inference/run.conf**.
+   3-2. According to **SOURCE_TYPE**, there are predefined **MEDIA** setting choices in **vaserving/run.conf**.
 
 4. Download All Predefined Deep Learning Models
  ```bash
- $ make video-inference-model
+ $ make vaserving-model
  ```
 
 5. Configure Deep Learning Models and Gstreamer Pipelines
 
-   There are 4 predefined model and pipeline combination in **video-inference/run.conf**. Choose one of them and comment others out.
+   There are 4 predefined model and pipeline combination in **vaserving/run.conf**. Choose one of them and comment others out.
 
     * model: person-vehicle-bike-detection-crossroad-1016
     * model: yolo-v4-tf
@@ -94,7 +94,7 @@
 
 ### Case 3: Deploy OpenVINO Video Inference
 
-1. Run up service with the configuration __video-inference/run.conf__.
+1. Run up service with the configuration __vaserving/run.conf__.
  ```bash
  $ make deploy-ov
  ```
@@ -148,11 +148,11 @@ Run inference server and client on foreground.
  ```
 3. Run inference server foreground
  ```bash
- $ cd video-inference; ./run.sh server
+ $ cd vaserving; ./run.sh server
  ```
 4. Run inference client foreground in another terminal
  ```bash
- $ cd video-inference; ./run.sh client
+ $ cd vaserving; ./run.sh client
  ```
 5. Stop and clear the service by the command.
  ```bash
@@ -161,12 +161,12 @@ Run inference server and client on foreground.
 
 ### Change model of "Case 4: Deploy Person Intrusion Service"
 
-1. Update video-inference/models_list/models.list.yml according to new model
+1. Update vaserving/models_list/models.list.yml according to new model
 2. Download models again
  ```bash
- $ make video-inference-model
+ $ make vaserving-model
  ```
-3. According to used model person label id to update **video-inference/samples/record_frames/mqtt_client.py**
+3. According to used model person label id to update **vaserving/samples/record_frames/mqtt_client.py**
 
 [comment]: <> (jsmpeg debug?)
 
