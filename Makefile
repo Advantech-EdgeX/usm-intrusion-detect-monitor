@@ -103,6 +103,7 @@ vaserving-stop:
 
 vaserving-model:
 	cd vaserving && ./tools/model_downloader/model_downloader.sh --model-list models_list/models.list.yml
+	if [ -d "vaserving/models/object_detection/person_vehicle_bike_1016" ]; then cp models/object_detection/person_vehicle_bike_1016/*.json vaserving/models/object_detection/person_vehicle_bike_1016/; fi
 
 stop:
 	sudo ./stop-dockers.sh
