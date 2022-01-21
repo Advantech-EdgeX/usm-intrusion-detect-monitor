@@ -159,7 +159,14 @@ Run inference server and client on foreground.
  $ make deploy-ov-down
  ```
 
-### Change model of "Case 4: Deploy Person Intrusion Service"
+### Enhancement of "Case 4: Deploy Person Intrusion Service"
+
+#### Confidence threshold to send EdgeX mqtt json with topic "AnalyticsData"
+
+* The default value is 0.6
+* run.conf CONFIDENCE_THRESHOLD is used for this configuration
+
+#### Change model
 
 1. Update vaserving/models_list/models.list.yml according to new model
 2. Download models again
