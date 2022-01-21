@@ -54,6 +54,8 @@ mqtt-down:
 
 jsmpeg-up:
 	docker-compose -f "jsmpeg/compose-files/docker-compose$(JSMPEG_DATA_SRC).yml" up -d
+jsmpeg-stop:
+	docker-compose -f "jsmpeg/compose-files/docker-compose$(JSMPEG_DATA_SRC).yml" stop
 jsmpeg-down:
 	-docker-compose -f "jsmpeg/compose-files/docker-compose$(JSMPEG_DATA_SRC).yml" down
 
@@ -70,6 +72,9 @@ run:
 	docker restart edgex-wrapper
 	docker restart edgex-device-mqtt
 	-docker stop video-analytics-serving-gstreamer
+
+deploy-stop: JSMPEG_DATA_SRC=-ov
+deploy-stop: jsmpeg-stop vaserving-stop
 
 deploy-down: JSMPEG_DATA_SRC=-ov
 deploy-down: jsmpeg-down vaserving-stop
