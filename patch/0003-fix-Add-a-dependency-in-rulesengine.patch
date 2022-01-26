@@ -1,0 +1,25 @@
+From 52d6173cf28580c5b18413c8b1be08adacc6ecd1 Mon Sep 17 00:00:00 2001
+From: Sam Hsu <Sam.Hsu@advantech.com.tw>
+Date: Tue, 25 Jan 2022 22:49:43 +0800
+Subject: [PATCH 3/4] fix: Add a dependency in rulesengine
+
+Signed-off-by: Sam Hsu <Sam.Hsu@advantech.com.tw>
+---
+ compose-files/docker-compose-fuji-ei-7.yml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/compose-files/docker-compose-fuji-ei-7.yml b/compose-files/docker-compose-fuji-ei-7.yml
+index d604cd0..c485950 100644
+--- a/compose-files/docker-compose-fuji-ei-7.yml
++++ b/compose-files/docker-compose-fuji-ei-7.yml
+@@ -283,6 +283,7 @@ services:
+       - ./kuiper/etc:/kuiper/etc
+     depends_on:
+       - app-service-rules
++      - mqtt-broker
+ 
+   azure-export-service:
+     image: advantech1234/docker-app-functions-azure:1.0.0
+-- 
+2.25.1
+

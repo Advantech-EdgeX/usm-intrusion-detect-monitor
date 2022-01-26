@@ -1,0 +1,138 @@
+From 7f650c7bf5cf8ac9608363ab28abb73ba8e2b259 Mon Sep 17 00:00:00 2001
+From: Sam Hsu <Sam.Hsu@advantech.com.tw>
+Date: Tue, 25 Jan 2022 22:52:44 +0800
+Subject: [PATCH 4/4] fix: Disable unused device services
+
+Signed-off-by: Sam Hsu <Sam.Hsu@advantech.com.tw>
+---
+ compose-files/docker-compose-fuji-ei-7.yml | 106 ++++++++++-----------
+ 1 file changed, 53 insertions(+), 53 deletions(-)
+
+diff --git a/compose-files/docker-compose-fuji-ei-7.yml b/compose-files/docker-compose-fuji-ei-7.yml
+index c485950..f644d58 100644
+--- a/compose-files/docker-compose-fuji-ei-7.yml
++++ b/compose-files/docker-compose-fuji-ei-7.yml
+@@ -452,51 +452,51 @@ services:
+       - data
+       - command
+ 
+-  device-mqtt:
+-    image: edgexfoundry/docker-device-mqtt-go:1.1.1
+-    ports:
+-      - "49982:49982"
+-    container_name: edgex-device-mqtt
+-    hostname: edgex-device-mqtt
+-    networks:
+-      - edgex-network
+-    volumes:
+-      - db-data:/data/db
+-      - log-data:/edgex/logs
+-      - consul-config:/consul/config
+-      - consul-data:/consul/data
+-      - ./mqtt:/custom-config
+-    depends_on:
+-      - data
+-      - command
+-    entrypoint:
+-      - /device-mqtt
+-      - --registry=consul://edgex-core-consul:8500
+-      - --confdir=/custom-config
++  # device-mqtt:
++  #   image: edgexfoundry/docker-device-mqtt-go:1.1.1
++  #   ports:
++  #     - "49982:49982"
++  #   container_name: edgex-device-mqtt
++  #   hostname: edgex-device-mqtt
++  #   networks:
++  #     - edgex-network
++  #   volumes:
++  #     - db-data:/data/db
++  #     - log-data:/edgex/logs
++  #     - consul-config:/consul/config
++  #     - consul-data:/consul/data
++  #     - ./mqtt:/custom-config
++  #   depends_on:
++  #     - data
++  #     - command
++  #   entrypoint:
++  #     - /device-mqtt
++  #     - --registry=consul://edgex-core-consul:8500
++  #     - --confdir=/custom-config
+ 
+-  device-modbus:
+-    image: edgexfoundry/docker-device-modbus-go:1.1.1
+-    ports:
+-      - "49991:49991"
+-    container_name: edgex-device-modbus
+-    hostname: edgex-device-modbus
+-    networks:
+-      - edgex-network
+-    devices:
+-      - /dev/ttyS0:/dev/ttyS0
+-    volumes:
+-      - db-data:/data/db
+-      - log-data:/edgex/logs
+-      - consul-config:/consul/config
+-      - consul-data:/consul/data
+-      - ./modbus:/custom-config
+-    depends_on:
+-      - data
+-      - command
+-    entrypoint:
+-      - /device-modbus
+-      - --registry=consul://edgex-core-consul:8500
+-      - --confdir=/custom-config
++  # device-modbus:
++  #   image: edgexfoundry/docker-device-modbus-go:1.1.1
++  #   ports:
++  #     - "49991:49991"
++  #   container_name: edgex-device-modbus
++  #   hostname: edgex-device-modbus
++  #   networks:
++  #     - edgex-network
++  #   devices:
++  #     - /dev/ttyS0:/dev/ttyS0
++  #   volumes:
++  #     - db-data:/data/db
++  #     - log-data:/edgex/logs
++  #     - consul-config:/consul/config
++  #     - consul-data:/consul/data
++  #     - ./modbus:/custom-config
++  #   depends_on:
++  #     - data
++  #     - command
++  #   entrypoint:
++  #     - /device-modbus
++  #     - --registry=consul://edgex-core-consul:8500
++  #     - --confdir=/custom-config
+ 
+   device-rest:
+     image: edgexfoundry/docker-device-rest-go:1.1.1
+@@ -567,15 +567,15 @@ services:
+       - consul-config:/consul/config
+       - consul-data:/consul/data
+ 
+-  edgex-wrapper:
+-    image: advantech1234/edgex-wrapper:1.0.0
+-    container_name: edgex-wrapper
+-    hostname: edgex-wrapper
+-    networks:
+-      - edgex-network
+-    depends_on:
+-      - mqtt-broker
+-    restart: on-failure
++  # edgex-wrapper:
++  #   image: advantech1234/edgex-wrapper:1.0.0
++  #   container_name: edgex-wrapper
++  #   hostname: edgex-wrapper
++  #   networks:
++  #     - edgex-network
++  #   depends_on:
++  #     - mqtt-broker
++  #   restart: on-failure
+ 
+ #################################################################
+ # Tooling
+-- 
+2.25.1
+

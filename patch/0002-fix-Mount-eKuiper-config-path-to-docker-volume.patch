@@ -1,0 +1,26 @@
+From 59b619085ea89d47dfd8f27d051cdddbf23ab964 Mon Sep 17 00:00:00 2001
+From: Sam Hsu <Sam.Hsu@advantech.com.tw>
+Date: Tue, 25 Jan 2022 20:45:10 +0800
+Subject: [PATCH 2/2] fix: Mount eKuiper config path to docker volume
+
+Signed-off-by: Sam Hsu <Sam.Hsu@advantech.com.tw>
+---
+ compose-files/docker-compose-fuji-ei-7.yml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/compose-files/docker-compose-fuji-ei-7.yml b/compose-files/docker-compose-fuji-ei-7.yml
+index da6c5f6..d604cd0 100644
+--- a/compose-files/docker-compose-fuji-ei-7.yml
++++ b/compose-files/docker-compose-fuji-ei-7.yml
+@@ -279,6 +279,8 @@ services:
+       edgex-network:
+         aliases:
+           - edgex-support-rulesengine
++    volumes:
++      - ./kuiper/etc:/kuiper/etc
+     depends_on:
+       - app-service-rules
+ 
+-- 
+2.25.1
+
