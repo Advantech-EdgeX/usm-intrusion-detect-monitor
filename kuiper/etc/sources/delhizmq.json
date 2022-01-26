@@ -1,0 +1,49 @@
+{
+  "about": {
+    "trial": true,
+    "author": {
+      "name": "Chinchen",
+      "email": "chinchen.lin@advantech.com.tw",
+      "company": "Advantech Co., Ltd",
+      "website": "https://advantech.com.tw"
+    },
+    "helpUrl": {
+    },
+    "description": {
+      "en_US": "The source will subscribe to a EdgeX-Delhi Zero MQ topic to import the messages into kuiper."
+    }
+  },
+  "libs": [
+    "github.com/pebbe/zmq4@v1.0.0"
+  ],
+  "properties": {
+    "default": [
+      {
+        "name": "server",
+        "default": "127.0.0.1:5536",
+        "optional": false,
+        "control": "text",
+        "type": "string",
+        "hint": {
+          "en_US": "The url of the ZeroMQ server"
+        },
+        "label": {
+          "en_US": "server address"
+        }
+      },
+      {
+        "name": "topic",
+        "default": "",
+        "optional": false,
+        "control": "text",
+        "type": "string",
+        "hint": {
+          "en_US": "The topic to publish to."
+        },
+        "label": {
+          "en_US": "topic"
+        }
+      }
+    ]
+  }
+}

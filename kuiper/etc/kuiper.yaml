@@ -1,0 +1,20 @@
+basic:
+  consoleLog: true
+  debug: false
+  fileLog: true
+  ip: 0.0.0.0
+  maxAge: 72
+  pluginHosts: https://www.emqx.io/downloads
+  port: 20498
+  prometheus: false
+  prometheusPort: 20499
+  restIp: 0.0.0.0
+  restPort: 48075
+  rotateTime: 24
+rule:
+  checkpointInterval: 300000
+  qos: 0
+sink:
+  cacheThreshold: 10
+  cacheTriggerCount: 15
+  disableCache: true

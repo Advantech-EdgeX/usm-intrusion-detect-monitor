@@ -1,0 +1,138 @@
+{
+  "about": {
+    "trial": false,
+    "author": {
+      "name": "Chinchen",
+      "email": "chinchen.lin@advantech.com.tw",
+      "company": "Advantech Co., Ltd",
+      "website": "https://advantech.com.tw"
+    },
+    "helpUrl": {
+    },
+    "description": {
+      "en_US": "The action is used for publish output message into a RESTful API for Patrol Inspect."
+    }
+  },
+  "properties": [
+    {
+      "name": "url",
+      "default": "",
+      "optional": false,
+      "control": "text",
+      "type": "string",
+      "hint": {
+        "en_US": "The RESTful API endpoint, such as https://www.example.com/api/dummy"
+      },
+      "label": {
+        "en_US": "URL"
+      }
+    },
+    {
+      "name": "method",
+      "optional": true,
+      "control": "select",
+      "default": "GET",
+      "type": "list_string",
+      "values": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "HEAD"
+      ],
+      "hint": {
+        "en_US": "The HTTP method for the RESTful API."
+      },
+      "label": {
+        "en_US": "HTTP method"
+      }
+    },
+    {
+      "name": "bodyType",
+      "optional": true,
+      "control": "select",
+      "default": "none",
+      "type": "list_string",
+      "values": [
+        "none",
+        "json",
+        "text",
+        "html",
+        "xml",
+        "javascript",
+        "form"
+      ],
+      "hint": {
+        "en_US": "The type of the body. For \"get\" and \"head\", no body is required so the default value is \"none\". For other http methods, the default value is \"json\" For \"html\", \"xml\" and \"javascript\", the dataTemplate must be carefully set up to make sure the format is correct."
+      },
+      "label": {
+        "en_US": "Body type"
+      }
+    },
+    {
+      "name": "timeout",
+      "default": 5000,
+      "optional": true,
+      "control": "text",
+      "type": "int",
+      "hint": {
+        "en_US": "The timeout (milliseconds) for a HTTP request, defaults to 5000 ms"
+      },
+      "label": {
+        "en_US": "Timeout(ms)"
+      }
+    },
+    {
+      "name": "headers",
+      "default": {},
+      "optional": true,
+      "control": "list",
+      "type": "object",
+      "hint": {
+        "en_US": "The additional headers to be set for the HTTP request."
+      },
+      "label": {
+        "en_US": "HTTP headers"
+      }
+    },
+    {
+      "name": "insecureSkipVerify",
+      "default": true,
+      "optional": true,
+      "control": "radio",
+      "type": "bool",
+      "hint": {
+        "en_US": "Control if to skip the certification verification. If it is set to true, then skip certification verification; Otherwise, verify the certification."
+      },
+      "label": {
+        "en_US": "Certification verification"
+      }
+    },
+    {
+      "name": "token",
+      "default": "",
+      "optional": true,
+      "control": "text",
+      "type": "string",
+      "hint": {
+        "en_US": "The token for the RESTful API authentication."
+      },
+      "label": {
+        "en_US": "Token for authentication"
+      }
+    },
+    {
+      "name": "debugResp",
+      "default": true,
+      "optional": true,
+      "control": "radio",
+      "type": "bool",
+      "hint": {
+        "en_US": "Control if print the response information into the console. If set it to true, then print response; If set to false, then skip print log."
+      },
+      "label": {
+        "en_US": "Print HTTP response"
+      }
+    }
+  ]
+}
