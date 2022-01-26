@@ -71,7 +71,16 @@ if [ -d "$PROJECT" ]; then
 	echo "!!! The ${PROJECT}/ directory exist! Skip git clone !!!"
 else
 	git clone https://github.com/Advantech-EdgeX/edgex-scripts.git -b master "$PROJECT"
-	if [ "$?" = 0 ] && [ -d "patch" ] && [ -f "patch/edgex-scripts_0001-fix-mailhog-no-receive-image.patch" ]; then
-		cat "patch/edgex-scripts_0001-fix-mailhog-no-receive-image.patch" | patch -p1 -d "$PROJECT"
+	if [ "$?" = 0 ] && [ -d "patch" ]; then
+        cd "$PROJECT"
+		sudo git am ../patch/00*.patch
+        cd ..
 	fi
+fi
+
+echo "Copy eKuiper config folder for docker volume mounting"
+if [ -d "kuiper" ]; then
+    sudo cp -pr kuiper "$PROJECT"/compose-files
+else
+    echo "The eKuiper config folder does not exist"
 fi

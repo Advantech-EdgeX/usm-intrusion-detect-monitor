@@ -69,8 +69,6 @@ deploy-docker-vi:
 
 run:
 	docker-compose -f edgex-scripts/compose-files/docker-compose-fuji-ei-7.yml -f docker-compose-edgex.yml up -d
-	docker restart edgex-wrapper
-	docker restart edgex-device-mqtt
 	-docker stop video-analytics-serving-gstreamer
 
 deploy-stop: JSMPEG_DATA_SRC=-ov
