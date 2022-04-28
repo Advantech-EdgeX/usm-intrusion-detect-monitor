@@ -16,7 +16,7 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o 
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
     $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-sudo apt install apt-transport-https ca-certificates curl software-properties-common
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu `lsb_release -cs` test"
 sudo apt update
@@ -33,7 +33,7 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 sudo apt install -y \
     python3-pip
 
-sudo pip3 install paho-mqtt opencv-python
+sudo pip3 install paho-mqtt opencv-python pillow
 
 # Required library and tools
 sudo apt install -y \
@@ -52,7 +52,13 @@ echo "Try to clone $PROJECT project..."
 if [ -d "$PROJECT" ]; then
 	echo "!!! The ${PROJECT}/ directory exist! Skip git clone !!!"
 else
-	git clone https://github.com/Advantech-Edgex/video-analytics-serving.git -b feature-full "$PROJECT"
+	mkdir "$PROJECT"
+	pushd "$PROJECT"
+	git init
+	git remote add origin https://github.com/Advantech-Edgex/video-analytics-serving.git
+	git fetch --depth=1 origin 78555c77d6707b18be6d103acd3e2ddd140aea1c
+	git reset --hard FETCH_HEAD
+	popd
 fi
 
 # Clone jsmpeg project from github Advantech-EdgeX
@@ -61,7 +67,13 @@ echo "Try to clone $PROJECT project..."
 if [ -d "$PROJECT" ]; then
 	echo "!!! The ${PROJECT}/ directory exist! Skip git clone !!!"
 else
-	git clone https://github.com/Advantech-Edgex/jsmpeg.git -b develop "$PROJECT"
+	mkdir "$PROJECT"
+	pushd "$PROJECT"
+	git init
+	git remote add origin https://github.com/Advantech-Edgex/jsmpeg.git
+	git fetch --depth=1 origin 0b131b808c4645e1422585b0a203091e55a46409
+	git reset --hard FETCH_HEAD
+	popd
 fi
 
 # Clone edgex-scripts.git project from github Advantech-EdgeX
@@ -70,7 +82,13 @@ echo "Try to clone $PROJECT project..."
 if [ -d "$PROJECT" ]; then
 	echo "!!! The ${PROJECT}/ directory exist! Skip git clone !!!"
 else
-	git clone https://github.com/Advantech-EdgeX/edgex-scripts.git -b master "$PROJECT"
+	mkdir "$PROJECT"
+	pushd "$PROJECT"
+	git init
+	git remote add origin https://github.com/Advantech-EdgeX/edgex-scripts.git
+	git fetch --depth=1 origin b9f1cf731bdf21bd62d7b0105373a57e1b5db748
+	git reset --hard FETCH_HEAD
+	popd
 	if [ "$?" = 0 ] && [ -d "patch" ]; then
         cd "$PROJECT"
 		sudo git am ../patch/00*.patch
