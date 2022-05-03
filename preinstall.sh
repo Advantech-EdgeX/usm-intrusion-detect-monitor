@@ -91,14 +91,14 @@ else
 	popd
 	if [ "$?" = 0 ] && [ -d "patch" ]; then
         cd "$PROJECT"
-		sudo git am ../patch/00*.patch
+		git am ../patch/00*.patch
         cd ..
 	fi
 fi
 
 echo "Copy eKuiper config folder for docker volume mounting"
 if [ -d "kuiper" ]; then
-    sudo cp -pr kuiper "$PROJECT"/compose-files
+    cp -pr kuiper "$PROJECT"/compose-files
 else
     echo "The eKuiper config folder does not exist"
 fi
