@@ -14,8 +14,8 @@
 #  *******************************************************************************/
 SHELL := /bin/bash
 
-.PHONY: help install deploy run edgex-rule edgex-notifications wise-export simulator vaserving stop deploy-ipcam deploy-ipcam-down deploy-ov deploy-ov-debug deploy-ov-down deploy-nv deploy-nv-down mqtt-up mqtt-down jsmpeg-up jsmpeg-down deploy-down vaserving vaserving-record-frames vaserving-stop
-.SILENT: help install deploy run edgex-rule edgex-notifications wise-export simulator vaserving stop deploy-ipcam deploy-ipcam-down deploy-ov deploy-ov-debug deploy-ov-down deploy-nv deploy-nv-down mqtt-up mqtt-down jsmpeg-up jsmpeg-down deploy-down vaserving vaserving-record-frames vaserving-stop
+.PHONY: help install deploy run edgex-rule edgex-notifications wise-export simulator stop deploy-ipcam deploy-ipcam-down deploy-ov deploy-ov-debug deploy-ov-down deploy-nv deploy-nv-down mqtt-up mqtt-down jsmpeg-up jsmpeg-down deploy-down vaserving vaserving-record-frames vaserving-stop
+.SILENT: help install deploy run edgex-rule edgex-notifications wise-export simulator stop deploy-ipcam deploy-ipcam-down deploy-ov deploy-ov-debug deploy-ov-down deploy-nv deploy-nv-down mqtt-up mqtt-down jsmpeg-up jsmpeg-down deploy-down vaserving vaserving-record-frames vaserving-stop
 
 
 help:
