@@ -88,17 +88,15 @@ else
 	git remote add origin https://github.com/Advantech-EdgeX/edgex-scripts.git
 	git fetch --depth=1 origin b9f1cf731bdf21bd62d7b0105373a57e1b5db748
 	git reset --hard FETCH_HEAD
-	popd
-	if [ "$?" = 0 ] && [ -d "patch" ]; then
-        cd "$PROJECT"
-		git am ../patch/00*.patch
-        cd ..
+	if [ -d "../patch" ]; then
+		git am ../patch/*.patch
 	fi
+	popd
 fi
 
 echo "Copy eKuiper config folder for docker volume mounting"
 if [ -d "kuiper" ]; then
-    cp -pr kuiper "$PROJECT"/compose-files
+	cp -pr kuiper "$PROJECT"/compose-files
 else
-    echo "The eKuiper config folder does not exist"
+	echo "The eKuiper config folder does not exist"
 fi
