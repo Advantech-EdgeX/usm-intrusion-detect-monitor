@@ -5,8 +5,7 @@
 ## Installation prerequisites
 * Ubuntu Linux 20.04 LTS 
 * Install CMake 3.13 or higher
-* [Install and Configure Intel OpenVINO Toolkit Version 2021.4.689 or higher](https://docs.openvino.ai/latest/openvino_docs_install_guides_installing_openvino_linux.html)
-  * [Intel Vision Accelerator Design with Intel Movidius VPUs](https://docs.openvino.ai/2021.4/openvino_docs_install_guides_installing_openvino_linux_ivad_vpu.html)
+* [Install and Configure Intel OpenVINO Toolkit Version 2021.4.2 LTS](https://docs.openvino.ai/2021.4/openvino_docs_install_guides_installing_openvino_linux.html)
 * A USB webcam
 * A IP Camera support RTSP video streaming
 
@@ -18,7 +17,13 @@
  ```bash
  $ make install
  ```
-* After installation, please __reboot__ system.
+
+* Check python modules installed: paho-mqtt, opencv-python, Pillow
+ ```bash
+ $ pip3 list | grep -E 'paho-mqtt|opencv-python|Pillow'
+ ```
+
+* Please __reboot__ system.
 
 ## Verify JSMpeg Data Path by Displaying RTSP Video Stream on the Web Browser
 
