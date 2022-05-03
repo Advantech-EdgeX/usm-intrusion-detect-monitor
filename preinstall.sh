@@ -56,7 +56,7 @@ else
 	pushd "$PROJECT"
 	git init
 	git remote add origin https://github.com/Advantech-Edgex/video-analytics-serving.git
-	git fetch --depth=1 origin 78555c77d6707b18be6d103acd3e2ddd140aea1c
+	git fetch --depth=1 origin b6498739caccaed5a54896d9ecd58601001d10fd
 	git reset --hard FETCH_HEAD
 	popd
 fi
