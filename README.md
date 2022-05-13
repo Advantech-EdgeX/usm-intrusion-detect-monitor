@@ -4,7 +4,18 @@
 
 ## Installation prerequisites
 * Ubuntu Linux 18.04 or 20.04 LTS
-  * Upgrade python3 to version python3.8
+  * Upgrade Ubuntu 18.04 LTS python3.6 to python3.8
+    ```bash
+    $ sudo add-apt-repository ppa:deadsnakes/ppa
+    $ sudo apt-get update
+    $ apt list | grep python3.8 # to check if *python3.8* exist
+    $ sudo apt-get install python3.8
+    $ sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 1
+    $ sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 2
+    $ sudo update-alternatives --config python3 # just to make sure
+    $ python3 -V
+    ```
+  <!-- * Upgrade Ubuntu 16.04 LTS python3.5 to python3.8 -->
     <!-- * Ubuntu 16.04 LTS -->
     <!--   ```bash -->
     <!--   $ sudo apt remove python3 -->
@@ -27,22 +38,10 @@
     <!--     $ python3 get-pip.py -->
     <!--     $ sudo apt install software-properties-common -->
     <!--     ``` -->
-    * Ubuntu 18.04 LTS
-      ```bash
-      $ sudo add-apt-repository ppa:deadsnakes/ppa
-      $ sudo apt-get update
-      ($ apt list | grep python3.8)
-      $ sudo apt-get install python3.8
-      $ sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 1
-      $ sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 2
-      ($ sudo update-alternatives --config python3)
-      $ python3 -V
-      ```
 
-* Install CMake 3.13 or higher
+* Install CMake (cmake version 3.10.2 for Ubuntu 18.04; 3.16.3 for Ubuntu 20.04)
 * Install git
-* A USB webcam
-* A IP Camera support RTSP video streaming
+* Prepare a USB webcam or a IP Camera support RTSP video streaming
 
 ## Install required software packages
 
