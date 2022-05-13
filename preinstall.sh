@@ -33,7 +33,11 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 sudo apt install -y \
     python3-pip
 
-sudo pip3 install paho-mqtt opencv-python pillow
+sudo -H pip3 install --upgrade pip
+
+sudo pip3 install paho-mqtt opencv-python pillow rasterio
+
+sudo pip3 install -U Pillow
 
 # Required library and tools
 sudo apt install -y \
