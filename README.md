@@ -3,9 +3,44 @@
 ![](doc/images/edgex_video_inference_arch_no_title.png)
 
 ## Installation prerequisites
-* Ubuntu Linux 20.04 LTS 
+* Ubuntu Linux 18.04 or 20.04 LTS
+  * Upgrade python3 to version python3.8
+    <!-- * Ubuntu 16.04 LTS -->
+    <!--   ```bash -->
+    <!--   $ sudo apt remove python3 -->
+    <!--   $ sudo apt remove python3.5 -->
+    <!--   $ sudo apt remove python3.5-minimal -->
+    <!--   ``` -->
+    <!--   * from source -->
+    <!--     ```bash -->
+    <!--     $ sudo apt update -->
+    <!--     $ sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget -y -->
+    <!--     $ cd ~/Downloads -->
+    <!--     $ wget https://www.python.org/ftp/python/3.8.12/Python-3.8.12.tgz -->
+    <!--     $ tar -xf Python-3.8.12.tgz -->
+    <!--     $ cd Python-3.8.12 -->
+    <!--     $ ./configure --enable-optimizations --prefix=/usr -->
+    <!--     $ make -j 4 -->
+    <!--     $ sudo make altinstall -->
+    <!--     $ cd .. -->
+    <!--     $ wget https://bootstrap.pypa.io/get-pip.py -->
+    <!--     $ python3 get-pip.py -->
+    <!--     $ sudo apt install software-properties-common -->
+    <!--     ``` -->
+    * Ubuntu 18.04 LTS
+      ```bash
+      $ sudo add-apt-repository ppa:deadsnakes/ppa
+      $ sudo apt-get update
+      ($ apt list | grep python3.8)
+      $ sudo apt-get install python3.8
+      $ sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 1
+      $ sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 2
+      ($ sudo update-alternatives --config python3)
+      $ python3 -V
+      ```
+
 * Install CMake 3.13 or higher
-* [Install and Configure Intel OpenVINO Toolkit Version 2021.4.2 LTS](https://docs.openvino.ai/2021.4/openvino_docs_install_guides_installing_openvino_linux.html)
+* Install git
 * A USB webcam
 * A IP Camera support RTSP video streaming
 
@@ -20,8 +55,10 @@
 
 * Check python modules installed: paho-mqtt, opencv-python, Pillow
  ```bash
- $ pip3 list | grep -E 'paho-mqtt|opencv-python|Pillow'
+ $ pip3.8 list | grep -E 'paho-mqtt|opencv-python|Pillow'
  ```
+
+Please sudo install any python package disappearing in the output manually.
 
 * Please __reboot__ system.
 
