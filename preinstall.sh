@@ -96,7 +96,7 @@ fi
 
 echo "Copy eKuiper config folder for docker volume mounting"
 if [ -d "kuiper" ]; then
-	cp -pr kuiper "$PROJECT"/compose-files
+	cp -a kuiper "$PROJECT"/compose-files
 else
 	echo "The eKuiper config folder does not exist"
 fi
